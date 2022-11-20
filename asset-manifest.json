@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/static/css/main.dee301bd.css",
+    "main.js": "/static/js/main.c97b2677.js",
+    "static/media/little_active_1.jpg": "/static/media/little_active_1.ebf9a7af9f28dd96de0e.jpg",
+    "static/media/sofa_0.jpg": "/static/media/sofa_0.bd4e0afeb2b87cd38e35.jpg",
+    "static/media/anstrengende_4.jpg": "/static/media/anstrengende_4.7e8ebaccaaaa3612389c.jpg",
+    "static/media/überwiegend_sitzend_2.jpg": "/static/media/überwiegend_sitzend_2.c33d2cdd72fffaef97e1.jpg",
+    "static/media/bg_.jpg": "/static/media/bg_.7d1c510aa719d51420be.jpg",
+    "static/media/überwiegend_gehend_3.jpg": "/static/media/überwiegend_gehend_3.a5d058212975bd72e781.jpg",
+    "static/media/man_.svg": "/static/media/man_.6157c8bc34ff39917c97718523246fa5.svg",
+    "static/media/woman_.svg": "/static/media/woman_.3f4018f58d52ef528ec006fc5f15a59e.svg",
+    "index.html": "/index.html",
+    "main.dee301bd.css.map": "/static/css/main.dee301bd.css.map",
+    "main.c97b2677.js.map": "/static/js/main.c97b2677.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dee301bd.css",
+    "static/js/main.c97b2677.js"
+  ]
+}
