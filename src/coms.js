@@ -27,9 +27,7 @@ export var Hello = (prop) => {
         justifyContent:'center',
         minHeight:'120vh',
         background:`url(${bg_})`,
-        // backgroundRepeat:'no-repeat',
         backgroundSize:'cover',
-        // objectFit:'cover'
     }
     var outDiv_2 = {
         display:'flex',
