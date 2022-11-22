@@ -72,9 +72,9 @@ export var Hello = (prop) => {
 
     // 1___ listener on input
     var input_changed = (event) =>{
-        var in_element = document.getElementById('name_in')
-        storage$('set','NAME',in_element.value)
-        setInput_$(in_element.value)
+        var in2input__ = document.getElementById('in2input_')
+        storage$('set','NAME',in2input__.value)
+        setInput_$(in2input__.value)
     }
     // 1___
 
@@ -87,8 +87,8 @@ export var Hello = (prop) => {
     // 3___ handling enter function()
     var handle_enter = (info) =>{
         setDone_$(true)
-        let element_ = document.getElementById('td')
-        element_.addEventListener('transitionend',()=>{prop.set(1)})
+        let outDiv_2_ = document.getElementById('outDiv_2')
+        outDiv_2_.addEventListener('transitionend',()=>{prop.set(1)})
     }
     // 3___
 
@@ -202,7 +202,7 @@ export var InputInfo = (prop) =>{
         let schwer_ = storage$('get','SCHWER')
         let alter_ = storage$('get','ALTER')
         let größe_ = storage$('get','GRÖßE')
-        let sport_ = storage$('get','SPORT_MALE')
+        let sport_ = storage$('get','SPORT')
         let aktivität_ = storage$('get','AKTIVITÄT')
         // message text, in case some fields are not filled
         let msg_ = isZero$(geschlecht_) ? 'Bitte gib deinen Geschlecht ein' : isZero$(schwer_) ? 'Bitte gib ein, wie schwer du bist' : isZero$(alter_) ? 'Bitte gib ein, wie alt du bist': isZero$(größe_) ? 'Bitte gib deine Größe ein' : isZero$(sport_) ? 'Bitte gib ein, wie oft du Sport machst' :  isNull$(aktivität_) ? 'Bitte wähle aus, welche zur welchen Aktivitätstufe du gehörst' : 'ALLES GUT'
@@ -284,21 +284,23 @@ export var InputInfo = (prop) =>{
 }
 export var Sport = (pro) => {
 
-    var [times_va$, setTimes_$] = useState(1)
-    var gr_con_s = {
+    // state to specify inside how many time, client do sport. 
+    var [times_$, setTimes_$] = useState(1)
+
+    // style$
+    var outDiv_1 = {
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'flexStart',
         margin:'10px 0px 30px 0px',
         background:'transparent',
-        // height:'250px',
         transition:'all ease 500ms',
         padding:'4px 0px 0px 0px',
         borderBottom:'1px solid #10182055',
         borderTop:'1px solid #10182055',
     }
-    var text_s = {
+    var p_s = {
         background:'#990011',
         color:'#fff',
         textShadow:'2px 2px 2px #000',
@@ -307,7 +309,7 @@ export var Sport = (pro) => {
         padding:'2px 4px',
         borderRadius:'4px'
     }
-    var con_s = {
+    var inDiv_1 = {
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
@@ -330,23 +332,25 @@ export var Sport = (pro) => {
         color:'#333',
         fontSize:'14px'
     }
+    // handle click on one of <li>
     var handle_times = (event) => {
+        // set times_$ value to li its id
         setTimes_$(event.target.id)
-        storage$('set','SPORT_MALE',Number(event.target.id))
-        let ele_array = document.querySelectorAll('.li_')
-        ele_array.forEach(i=> i.style.background='transparent')
-        ele_array[event.target.id].style.background='#fee715'
-        
+        // upgrade storage
+        storage$('set','SPORT',Number(event.target.id))
+        // change bg color of <li> once it gets clicked
+        let li_all = document.querySelectorAll('.li_')
+        li_all.forEach(i=> i.style.background='transparent')
+        li_all[event.target.id].style.background='#fee715'
     }
-    
+    // useEffect state
     useEffect(()=>{
-    },[times_va$])
+    },[times_$])
     
     return(
-
-        <div style={gr_con_s}>
-            <p style={text_s}>Wie Oft Mach Ich Sport In Der Woche?</p>
-            <div style={con_s}>
+        <div style={outDiv_1}>
+            <p style={p_s}>Wie Oft Mach Ich Sport In Der Woche?</p>
+            <div style={inDiv_1}>
                 <li id={0} className={'li_ li_0'} onClick={(event)=>handle_times(event)} style={li_s}>Überhaupt Nicht <br></br><span id={0} style={span_s}>-</span></li>
                 <li id={1} className={'li_ li_1'} onClick={(event)=>handle_times(event)} style={li_s}>Ab Und ZU <br></br><span id={1} style={span_s}>Ein Oder 2 Mal</span></li>
                 <li id={2} className={'li_ li_2'} onClick={(event)=>handle_times(event)} style={li_s}>Oft <br></br><span id={2} style={span_s}>3-4 Mal</span></li>
@@ -357,29 +361,22 @@ export var Sport = (pro) => {
     )
 }
 export var Range_ = (pro)=>{
-    
-    let [range_va$, setRange_va$] = useState(0)
+    // 
     let range__ = `range${pro.id}`
-    let items_ = ['SCHWER','GRÖßE','ALTER']
-    let units_ =['kg','cm','Jahre']
-    // $('#range').on("input", function() {
-    //     $('.output').val(this.value +",000  $" );
-    //     }).trigger("change");
+    let com_values = ['SCHWER','GRÖßE','ALTER']
+    let com_units =['kg','cm','Jahre']
 
+    // useEffect state
         useEffect(()=>{
             let range_ = document.getElementById(range__)
-            let output_ = document.querySelector('.output')
-            // range_.addEventListener('change',()=>{
-            //     setRange_va$(range_.value)
-            // })
-            // console.log(range__)
             range_.addEventListener('input',()=>{
                 pro.set(range_.value)
             })
-            storage$('set',items_[pro.id],pro.value)
+            // upgrade storage
+            storage$('set',com_values[pro.id],pro.value)
 
         },[pro.value])
-        var range_con_s = {
+        var outDiv_1 = {
             width:'100%',
             display:'flex',
             flexWrap:'wrap',
@@ -390,18 +387,18 @@ export var Range_ = (pro)=>{
             flexDirection:'column',
             padding:'20px 0px',
         }
-        var output_change = (event) =>{
-            
+        var input2handler = (event) =>{
+            // push the inside value of input_2 into a state, located on top-level
             pro.set(event.target.value)
         }
     return(
-        <div style={range_con_s} >
+        <div style={outDiv_1} >
             <p className="budget">{pro.title}<span>{pro.value ? `${pro.value} ${pro.unit_} `:' ... '}</span>{ pro.title_}</p>
             <label htmlFor="range">
                 <input type="range" name="range" id={range__} min={pro.min} max={pro.max} step="0.5" defaultValue={0} />
             </label>
-            <span className="conta_">
-            <input type={"number"} htmlFor="range" step={1} value={`${pro.value}`} onChange={(event)=>{output_change(event)}} className="output"></input> <span id="unit_">{units_[pro.id]}</span>
+            <span className="span_1">
+            <input type={"number"} htmlFor="range" step={1} value={`${pro.value}`} onChange={(event)=>{input2handler(event)}} className="output"></input> <span id="unit_">{com_units[pro.id]}</span>
             </span>
         </div>
     )
@@ -409,13 +406,9 @@ export var Range_ = (pro)=>{
 }
 
 export var Choice = (pro) => {
-    var [com_0_$,setCom0_$] =useState()
-    var [com_1_$,setCom1_$] =useState()
 
-    var [checkedX_$,setCheckedX_$] = useState(false)
-    var [s$,setS$] = useState(false)
-
-    var choice_s = {
+    // style
+    var outLabel_1 = {
         position:'relative',
         zIndex:'999',
         display:'flex',
@@ -430,30 +423,13 @@ export var Choice = (pro) => {
         width:pro.id<2 ?'100px' : '200px',
         cursor:'pointer',
         transition:'all ease-in-out 400ms',
-        background: pro.comp===0 ? (pro.state===0&&pro.id===0 ? '#fee715' : pro.state===1&&pro.id===1 ? '#fee715' : 'transparent' ) : pro.comp===1 ? (pro.state===2&&pro.id===2 ? '#fee715' : pro.state===3&&pro.id===3 ? '#fee715' :pro.state===4&&pro.id===4 ? '#fee715' :pro.state===5&&pro.id===5 ? '#fee715' :pro.state===6&&pro.id===6 ? '#fee715' : 'transparent' ) : 'transparent' 
-        // pro.id<2 ?  
-        // (pro.state===0 ? 
-        // (pro.id === 0 ? '#fee715' : 'transparent') : 
-        // pro.state===1 ? 
-        // (pro.id === 1 ? '#fee715' : 'transparent') : 
-        // 'transparent') :
-        // (pro.state===2 ? 
-        // (pro.id === 2 ? '#fee715' : 'transparent') : 
-        // pro.state===3 ? 
-        // (pro.id === 3 ? '#fee715' : 'transparent') :
-        // pro.state===4 ? 
-        // (pro.id === 4 ? '#fee715' : 'transparent') :
-        // pro.state===5 ? 
-        // (pro.id === 5 ? '#fee715' : 'transparent') :
-        // pro.state===6 ? 
-        // (pro.id === 6 ? '#fee715' : 'transparent') :
-        // 'transparent')
+        background: pro.comp===0 ? (pro.state===0&&pro.id===0 ? '#fee715' : pro.state===1&&pro.id===1 ? '#fee715' : 'transparent' ) : pro.comp===1 ? (pro.state===2&&pro.id===2 ? '#fee715' : pro.state===3&&pro.id===3 ? '#fee715' :pro.state===4&&pro.id===4 ? '#fee715' :pro.state===5&&pro.id===5 ? '#fee715' :pro.state===6&&pro.id===6 ? '#fee715' : 'transparent' ) : 'transparent',
     }
-    var bg__ = (id_) =>{
-        let x = document.querySelector("[aria-describedby='al']")
+    // flexible background on click, as a fun()
+    var bg__ = (event) =>{
         pro.comp===0 ? (pro.id===0 ? pro.set(0) : pro.set(1)) : (pro.id===2 ? pro.set(2) : pro.id===3 ? pro.set(3) : pro.id===4 ? pro.set(4) : pro.id===5?pro.set(5) : pro.set(6))
     }
-    var con_s = {
+    var inDiv_1 = {
      position:'relative',
      zIndex:'1',
      padding:'8px',
@@ -471,17 +447,16 @@ export var Choice = (pro) => {
         objectFit:'cover',
         borderRadius:'8px'
     }
-    var label_s = {
+    var inLabel_1 = {
         position:'relative',
         zIndex:'1',
         padding:'0px 4px',
         fontSize:'14px',
-        // fontWeight:'400',
         textShadow:'1px 1px 1px #fff',
         cursor:'pointer',
         textTransform:'uppercase',
     }
-    var radio_s = {
+    var input_ = {
         position:'relative',
         zIndex:'1',
         padding:'0px 0px',
@@ -491,56 +466,44 @@ export var Choice = (pro) => {
         height:'0px',
         background:'transparent',
         borderRadius:'2px',
-        // border: '2px solid #000',
         cursor:'pointer',
     }
-    var info_s = {
+    var inLabel_2 = {
         textAlign:'center',
         cursor:'pointer',
         textShadow:'0px 0px 1px #f1f2f3',
         fontSize:'18px',
-        // color: pro.comp===1 ? (pro.state===2&&pro.id===2 ? '#990011' : pro.state===3&&pro.id===3 ? '#990011' :pro.state===4&&pro.id===4 ? '990011' :pro.state===5&&pro.id===5 ? '#990011' :pro.state===6&&pro.id===6 ? '#990011' : '#101820' ) : '#101820'
-    }
-    let x = Math.random()
-
-    // 
-    let update = (event) =>{
-        storage$('set',figureKey(pro.state),event.target.title)
     }
     
-    useEffect(()=>{
-        // storage$('set',figureKey(pro.state),'false')
-    },[x])
-    var handle_click = (event) =>{
-    //     pro.id<2 ?
-    //    ( pro.id===0 ? pro.set(0) :
-    //     pro.id===1 ? pro.set(1) : notdo$()) :
-    //     (pro.id===2 ? pro.set(2) :
-    //     pro.id===3 ? pro.set(3) :
-    //     pro.id===4 ? pro.set(4) :
-    //     pro.id===5 ? pro.set(5) :
-    //     pro.id===6 ? pro.set(6) :
-    //     pro.set(7))
-    //     console.log(pro.state)
-    bg__()
-    }
+    let x = Math.random()
 
-    var figureKey = (key_) =>{
+    // update storage
+    let update = (event) =>{
+        storage$('set',comId2string(pro.state),event.target.title)
+    }
+    
+    // use Effect state$
+    useEffect(()=>{        },[x])
+
+    // convert each component id to string
+    var comId2string = (key_) =>{
         return key_ === 0 ? 'GENDER' : key_ ===1 ? 'GENDER' : key_ === 2 ? 'AKTIVITÄT' : key_===3 ? 'AKTIVITÄT' : key_===4 ? 'AKTIVITÄT' : key_===5 ? 'AKTIVITÄT' : key_===6 ? 'AKTIVITÄT' : 'UNKNOWN ID'
     }
+
     return(
-        <label aria-describedby={'al'} aria-label={`al${pro.id}`} id={pro.id} style={choice_s} htmlFor={x} className={`${pro.class[0]} choice_I`} onClick={(event)=>handle_click(event)}>
+        <label aria-describedby={'al'} aria-label={`al${pro.id}`} id={pro.id} style={outLabel_1} htmlFor={x} className={`${pro.class[0]} choice_I`} onClick={(event)=>bg__(event)}>
             <img src={pro.src} style={img_s}></img>
-            <div style={con_s}>
-                <label htmlFor={x} style={label_s}>{pro.info}</label>
-                <input type={'radio'} name={'same'} title={pro.text_I}  onClick={(event)=>update(event)}  id={x} className={pro.class[1]} style={radio_s}></input>
+            <div style={inDiv_1}>
+                <label htmlFor={x} style={inLabel_1}>{pro.info}</label>
+                <input type={'radio'} title={pro.text_I}  onClick={(event)=>update(event)}  id={x} className={pro.class[1]} style={input_}></input>
             </div>
-                {pro.info_i && <label htmlFor={x} style={info_s}>{pro.info_i[0]} <br></br> {pro.info_i[1]}</label>}
+                {pro.info_i && <label htmlFor={x} style={inLabel_2}>{pro.info_i[0]} <br></br> {pro.info_i[1]}</label>}
         </label>
     )
 }
 export var Button1 = (pro) => {
 
+    // style$
     var btn_s = {
         textAlign:'center',
         border:'none',
@@ -565,8 +528,9 @@ export var Button1 = (pro) => {
         </button>
     )
 }
-export var Name_bar = (pro) => {
 
+export var Name_bar = (pro) => {
+    // style$
     var btn_s = {
         padding:'2px 2em',
         margin:'0em 0px 0px 5em ',
@@ -582,7 +546,7 @@ export var Name_bar = (pro) => {
         fontWeight:'600',
         transition:'all ease 500ms'
     }
-    var nameBar_s = {
+    var outDiv_1 = {
         background:'#ffffff66',
         width:'100%',
         padding:'8px 0px',
@@ -602,7 +566,7 @@ export var Name_bar = (pro) => {
         margin:'0px 3em'
     }
     return(
-    <div style={nameBar_s}>
+    <div style={outDiv_1}>
         <p style={p_s}>KALORIE RECHNER</p>
         {pro.btn_ && <button style={btn_s} id='btn_' onClick={pro.btn_handler}><AiOutlineArrowLeft/></button>
         }
@@ -611,15 +575,17 @@ export var Name_bar = (pro) => {
     )
 }
 export var Result = (pro) =>{
+    // getting some values from storage
     let name_ = storage$('get','NAME') || 'mein guter'
-    let var_ = storage$('get','RES_ARR') || 0
-    let res__ = calorieCalculator$(var_[0],var_[1],var_[2],var_[3],var_[4],var_[5],name_) || 0
+    let inputed_values = storage$('get','INPUTED_VALUES') || 0
     let USERS_ = storage$('get','USERS') || []
-    USERS_.every(x=>x[2]!==res__[2]) ? USERS_.push(res__) : notdo$()
-    // USERS_.push(res__)
+    // running function with inputed_values inside to get the result_
+    let result_ = calorieCalculator$(inputed_values[0],inputed_values[1],inputed_values[2],inputed_values[3],inputed_values[4],inputed_values[5],name_) || 0
+    // check that the value recent pushed is not alerady existing /if names are same, then donot push it to the end-result 
+    USERS_.every( one => one[2]!==result_[2]) ? USERS_.push(result_) : notdo$()
+    // upgrade/ upload storage
     storage$('set','USERS', USERS_)
-    console.log(USERS_)
-    var con_s = {
+    var outDiv_1 = {
         display:'flex',
         flexDirection:'column',
         justifyContent:'center',
@@ -628,7 +594,7 @@ export var Result = (pro) =>{
         background:`url(${bg_})`,
         backgroundSize:'cover'
     }
-    var flex_con = {
+    var inDiv_2 = {
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
@@ -662,7 +628,7 @@ export var Result = (pro) =>{
         fontSize:'24px',
         fontWeight:'600'
     }
-    var div_s = {
+    var inDiv_1 = {
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
@@ -674,23 +640,23 @@ export var Result = (pro) =>{
         color:'#101820ff',
         textShadow:'1px 1px 2px #fff'
     }
-    var i_1 = {
+    var p2_s = {
         margin:'0px 0px 8px 0px'
     }
-    // console.log(pro.state)
+    // button handler, to switch to other sites
     var handle_btn = (id) =>{
         id === 0 ? pro.set(0) : id===1 ? pro.set(9) : <h1>404</h1>
     }
 
     return(
-        <div style={con_s}>
-            <div style={div_s}>
-                <p style={i_1}>Hallo <span style={span_s}>{res__[2]}</span>,</p>
-                <p>Dein Gesamtumsatz Am Tag liegt zwischen <span style={p_s}>{res__[1]-50}</span> und <span style={p_s}>{res__[1]+50}</span> kcal</p>
-                 <p>Und Dein Grundumsatz Am Tag liegt zwischen <span style={p_s}>{res__[0]-50} </span> und <span style={p_s}> {res__[0]+50.0}</span> kcal</p>
+        <div style={outDiv_1}>
+            <div style={inDiv_1}>
+                <p style={p2_s}>Hallo <span style={span_s}>{result_[2]}</span>,</p>
+                <p>Dein Gesamtumsatz Am Tag liegt zwischen <span style={p_s}>{result_[1]-50}</span> und <span style={p_s}>{result_[1]+50}</span> kcal</p>
+                 <p>Und Dein Grundumsatz Am Tag liegt zwischen <span style={p_s}>{result_[0]-50} </span> und <span style={p_s}> {result_[0]+50.0}</span> kcal</p>
             </div>
             
-            <div style={flex_con}>
+            <div style={inDiv_2}>
                 <button id="btn_" style={btn_s} onClick={()=>handle_btn(0)}>
                     ANDERE BENUTZER/IN
                 </button>
@@ -701,6 +667,7 @@ export var Result = (pro) =>{
         </div>
     )
 }
+
 export function Table(pro) {
 
     var tabelcon_s = {
