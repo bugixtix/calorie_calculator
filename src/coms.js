@@ -11,7 +11,7 @@ import activity_3 from './imges/überwiegend_gehend_3.jpg'
 import activity_4 from './imges/anstrengende_4.jpg'
 import bg_ from './imges/bg_.jpg'
 import {AiOutlineArrowLeft} from 'react-icons/ai'
-import $ from 'jquery'
+
 var xy = 0
 var alert_msg = 'BITTE TREFFEN SIE EINE AUSWAHL..' 
 export var Hello = (prop) => {
@@ -87,7 +87,7 @@ export var Hello = (prop) => {
     // 3___ handling enter function()
     var handle_enter = (info) =>{
         setDone_$(true)
-        let element_ = document.getElementById('td')
+        let element_ = document.getElementById('outDiv_2')
         element_.addEventListener('transitionend',()=>{prop.set(1)})
     }
     // 3___
