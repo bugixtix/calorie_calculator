@@ -11,9 +11,7 @@ import activity_3 from './imges/überwiegend_gehend_3.jpg'
 import activity_4 from './imges/anstrengende_4.jpg'
 import bg_ from './imges/bg_.jpg'
 import {AiOutlineArrowLeft} from 'react-icons/ai'
-
-var xy = 0
-var alert_msg = 'BITTE TREFFEN SIE EINE AUSWAHL..' 
+ 
 export var Hello = (prop) => {
     // state$ for whatever was typed inside the field
     var [in2input_$, setInput_$] = useState('')
