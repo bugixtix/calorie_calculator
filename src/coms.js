@@ -15,20 +15,21 @@ import $ from 'jquery'
 var xy = 0
 var alert_msg = 'BITTE TREFFEN SIE EINE AUSWAHL..' 
 export var Hello = (prop) => {
-    var [input_$, setInput_$] = useState('')
+    // state$ for whatever was typed inside the field
+    var [in2input_$, setInput_$] = useState('')
+    // state$, true after entering enter
     var [done_$, setDone_$] = useState(false)
-    var hello_s = {
+    // Styles
+    var outDiv_1 = {
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'center',
         minHeight:'120vh',
         background:`url(${bg_})`,
-        // backgroundRepeat:'no-repeat',
         backgroundSize:'cover',
-        // objectFit:'cover'
     }
-    var con_s = {
+    var outDiv_2 = {
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
@@ -42,7 +43,7 @@ export var Hello = (prop) => {
         opacity:done_$ ? '0' : '1',
         margin:'0px 0px 10em 0px'
     }
-    var label_s = {
+    var in2label_ = {
         fontSize:'22px',
         fontWeight:'500',
         textDecoration:'underline',
@@ -53,7 +54,7 @@ export var Hello = (prop) => {
         cursor:'pointer',
         margin:'10px 0px',
     }
-    var in_s = {
+    var in2input_ = {
         border:'none',
         outline:'none',
         padding:'8px 2px',
@@ -71,14 +72,15 @@ export var Hello = (prop) => {
 
     // 1___ listener on input
     var input_changed = (event) =>{
-        var in_element = document.getElementById('name_in')
+        var in_element = document.getElementById('in2input_')
         storage$('set','NAME',in_element.value)
         setInput_$(in_element.value)
     }
     // 1___
-    // 2___ onKeyDown listener on input
+
+    // 2___ onKeyDown listener on input, prepars handle_enter fun() to work once ENTER is clicked
     var input_keyDown = (event) =>{
-        enter_key$(event)?handle_enter(input_$):notdo$()
+        enter_key$(event)?handle_enter(in2input_$):notdo$()
     }
     // 2___ 
 
@@ -89,17 +91,20 @@ export var Hello = (prop) => {
         element_.addEventListener('transitionend',()=>{prop.set(1)})
     }
     // 3___
+
+    // useEffect State$,
     useEffect(()=>{
-        document.getElementById('Hello').addEventListener('keydown',input_keyDown)
-    },[input_$])
+        // adding an event listener to the outDiv_1/page, the fun() inside checks if ENTER was clicked
+        document.getElementById('outDiv_1').addEventListener('keydown',input_keyDown)
+    },[in2input_$])
     return(
 
-        <div id="Hello" style={hello_s}>
-            <div style={con_s} id='td'>
-            <label htmlFor='name_in' style={label_s}>
+        <div id="outDiv_1" style={outDiv_1}>
+            <div id="outDiv_2" style={outDiv_2}>
+            <label htmlFor='in2input_' style={in2label_}>
                 Hi, bitte gib deinen Name ein
             </label>
-            <input type={'text'} style={in_s} id='name_in' onChange={input_changed} value={input_$}>
+            <input id="in2input_" type={'text'} style={in2input_} onChange={input_changed} value={in2input_$}>
             </input>
             </div>
         </div>
@@ -111,12 +116,18 @@ export var Hello = (prop) => {
 // -------------------------------------------
 
 export var InputInfo = (prop) =>{
-    // var [switch_$, setSwitch_$] = useState(0)
-    var [Schwer_$, setSchwer_$] = useState(null)
-    var [Größe_$, setGröße_$] = useState(null)
-    var [Alter_$, setAlter_$] = useState(null)
 
-    var inputInfo_s = {
+    // couple of states for weight, size and age
+    var [Schwer_$, setSchwer_$] = useState(0)
+    var [Größe_$, setGröße_$] = useState(0)
+    var [Alter_$, setAlter_$] = useState(0)
+    // couple of states for name value, specifying to which group would a component belong
+    var [name_$,setName_$] = useState()
+    var [_num_$,setNum_$] = useState(404)
+    var [_1num_$, set1Num_$] = useState(404)
+
+    // Style§
+    var outDiv_1 = {
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
@@ -127,20 +138,15 @@ export var InputInfo = (prop) =>{
         padding:'50px 0px 0px 0px'
     }
 
-    var cont_s = {
+    var outDiv_2 = {
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
-        // flexWrap:'wrap',
         alignItems:'center',
         padding:'0px 20px',
-        // width:'100%',
         background:'transparent',
-        // margin:'120px 0px '
-        // overflowX:'hidden',
-        // borderBottom:'1px solid #10182055'
     }
-    var cont_s_ = {
+    var outDiv_3 = {
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
@@ -151,7 +157,7 @@ export var InputInfo = (prop) =>{
         borderBottom:'1px solid #10182044'
     }
 
-    var range_cont = {
+    var inDiv_2 = {
         display:'flex',
         flexWrap:'wrap',
         flexDirection:'column',
@@ -159,10 +165,8 @@ export var InputInfo = (prop) =>{
         justifyContent:'center',
         margin:'0px 0px 0px 20px',
         padding:'0px 0px 0px 10px',
-        // borderLeft:'1px solid #101820',
-        // borderRadius:'8px'
     }
-    var p_s = {
+    var p_1 = {
         background:'#990011',
         color:'#fff',
         textShadow:'2px 2px 2px #000',
@@ -170,7 +174,7 @@ export var InputInfo = (prop) =>{
         padding:'2px 4px',
         borderRadius:'4px'
     }
-    var wrapper_s = {
+    var inDiv_10 = {
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
@@ -178,55 +182,61 @@ export var InputInfo = (prop) =>{
         borderRight:'1px solid #99999977',
         paddingRight:'20px',
     }
-    var wrapper_s_ = {
+    var inDiv_1 = {
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         textTransform:'uppercase'
     }
-    let [name_$,setName_$] = useState()
-    let [check_$,setCheck_$] = useState(404)
-    let [check_0$, setCheck_0$] = useState(404)
-
+    
+    // Use Effect state$
     useEffect(()=>{
+        // upload NAME in storage
         setName_$(storage$('get','NAME'))
     },[name_$])
 
-    var handle_btn = (key_,) =>{
-        var name_ = storage$('get', 'NAME') || 'ANONYMOUS'
-        let gender_ = storage$('get','GENDER')
+    var handle_btn1 = (key_,) =>{
+        // get all variables from the storage
+        let name_ = storage$('get', 'NAME') || 'ANONYMOUS'
+        let geschlecht_ = storage$('get','GESCHLECHT')
         let schwer_ = storage$('get','SCHWER')
         let alter_ = storage$('get','ALTER')
         let größe_ = storage$('get','GRÖßE')
         let sport_ = storage$('get','SPORT_MALE')
-        // let sport_dauer = storage$('get','SPORT_DAUER')
         let aktivität_ = storage$('get','AKTIVITÄT')
-        // let sport_total = storage$('get','DIT')
-        let msg_ = isZero$(gender_) ? 'Bitte gib deinen Geschlecht ein' : isZero$(schwer_) ? 'Bitte gib ein, wie schwer du bist' : isZero$(alter_) ? 'Bitte gib ein, wie alt du bist': isZero$(größe_) ? 'Bitte gib deine Größe ein' : isZero$(sport_) ? 'Bitte gib ein, wie oft du Sport machst' :  isNull$(aktivität_) ? 'Bitte wähle aus, welche zur welchen Aktivitätstufe du gehörst' : 'ALLES GUT'
-        if(isNull$(gender_)||isZero$(schwer_)||isZero$(größe_)||isZero$(alter_)||isNull$(sport_)||isNull$(aktivität_))alert(msg_)
+        // message text, in case some fields are not filled
+        let msg_ = isZero$(geschlecht_) ? 'Bitte gib deinen Geschlecht ein' : isZero$(schwer_) ? 'Bitte gib ein, wie schwer du bist' : isZero$(alter_) ? 'Bitte gib ein, wie alt du bist': isZero$(größe_) ? 'Bitte gib deine Größe ein' : isZero$(sport_) ? 'Bitte gib ein, wie oft du Sport machst' :  isNull$(aktivität_) ? 'Bitte wähle aus, welche zur welchen Aktivitätstufe du gehörst' : 'ALLES GUT'
+        // alerting the message, in case some fields are not filled
+        if(isNull$(geschlecht_)||isZero$(schwer_)||isZero$(größe_)||isZero$(alter_)||isNull$(sport_)||isNull$(aktivität_))alert(msg_)
+        // go on, if every field is alerady filled
         else{
-            let activi_conv = aktivität_==0 ? 1.2 : aktivität_==1 ? 1.4 : aktivität_ ==2 ? 1.6 : aktivität_ ==3 ? 1.8 : aktivität_==4 ? 2.0 : 0
-            let sport_conv = sport_===0 ? 0.01 : sport_===1 ? 0.06 : sport_===2 ? 0.13 : sport_===3 ? 0.2 : -1
-            let RES_ARR = [gender_,schwer_,größe_,alter_,activi_conv,sport_conv,name_]
-            let ALL_RES = storage$('get','ALL_RES') || []
-            ALL_RES.push(RES_ARR)
-            storage$('remove','GENDER'); storage$('remove','SCHWER'); storage$('remove','ALTER'); storage$('remove','GRÖßE'); storage$('remove','SPORT_MALE'); storage$('remove','AKTIVITÄT');
-            storage$('set','RES_ARR',RES_ARR)
-            storage$('set', 'ALL_RES', ALL_RES)
+            // interpretate activität_ , give it some real values(PalFactor)
+            let _aktivität_ = aktivität_==0 ? 1.2 : aktivität_==1 ? 1.4 : aktivität_ ==2 ? 1.6 : aktivität_ ==3 ? 1.8 : aktivität_==4 ? 2.0 : 0
+            // interpretate sport_, give it some real values(PalFactor)
+            let _sport_ = sport_===0 ? 0.01 : sport_===1 ? 0.06 : sport_===2 ? 0.13 : sport_===3 ? 0.2 : -1
+            // put inputed values in an array, 
+            let inputed_values = [geschlecht_,schwer_,größe_,alter_,_aktivität_,_sport_,name_]
+            // put all inputed values in an array,
+            let allInputed_values = storage$('get','ALL_INPUTED_VALUES') || []
+            allInputed_values.push(inputed_values)
+            // make the storage empty from specific values
+            storage$('remove','GESCHLECHT'); storage$('remove','SCHWER'); storage$('remove','ALTER'); storage$('remove','GRÖßE'); storage$('remove','SPORT_MALE'); storage$('remove','AKTIVITÄT');
+            // upload allInputed_values and inputed_values to the storage
+            storage$('set','INPUTED_VALUES',inputed_values)
+            storage$('set', 'ALL_INPUTED_VALUES', allInputed_values)
+            // switch to the next page, by setting a high-level state to 2
             prop.set(2)
-            console.log(RES_ARR)
         }
     }
-        // var handle_btn = ()=>{}
-    var coms_ar = ['GENDER','SCHWER','GRÖßE']
-    var activity_info =[
+    // some texts for the AKTIVITÄT SECTION
+    var aktivität_stufen =[
         'Stufe : 0',
         'Stufe : 1',
         'Stufe : 2',
         'Stufe : 3',
         'Stufe : 4',
     ]
-    var activity_info_i = [
+    var aktivität_details = [
         ['ausschließlich sitzend/liegend','z.B. Alte, gebrechliche Menschen'],
         ['ausschließlich sitzend, wenig oder keine körperliche Freizeitaktivitäten','z.B. Schreibtischtätigkeit, Studierende'],
         ['überwiegend sitzende, zwischendurch gehend oder stehend','z.B. Kraftfahrer, Laboranten, Lehrer'],
@@ -234,47 +244,47 @@ export var InputInfo = (prop) =>{
         ['körperlich anstrengende (Berufs-)Tätigkeiten','z.B. Waldarbeiter, Landwirter'],
     ]
     return(
-        <div id="InputInfo" style={inputInfo_s}>
-
+        <div id="outDiv_1" style={outDiv_1}>
+            {/* Namebar */}
             <Name_bar name_$={name_$}/>
 
-            <div style={cont_s}>
-                <div style={wrapper_s_}>
-                    <p style={p_s}>Ich Bin Ein<span>{check_$===0 ? 'e' : check_$===1 ? '' : '/e'}</span> <span>{check_$===0 ? ' Frau' : check_$===1 ? ' Mann' : ' ... '}</span></p>
-                <div style={wrapper_s}>
-                <Choice comp={0} text_I={'FEMALE'} info={'frau'} id={0} src={woman_} class={['label_I','radio_I']} state={check_$} set={setCheck_$}/>
-                <Choice comp={0} text_I={'MALE'} info={'mann'} id={1} src={man_} class={['label_II','radio_II']} state={check_$} set={setCheck_$}/>
+            <div style={outDiv_2}>
+                <div style={inDiv_1}>
+                    {/* {specifying the text title, make sure that if FRAU was clicked then returns"e" if not then not} */}
+                <p style={p_1}>Ich Bin Ein<span>{_num_$===0 ? 'e' : _num_$===1 ? '' : '/e'}</span> <span>{_num_$===0 ? ' Frau' : _num_$===1 ? ' Mann' : ' ... '}</span></p>
+                <div style={inDiv_10}>
+                    {/*     COME BACK LATER TO MODIFY THIS ----- */}
+                <Choice id={0} comp={0} text_I={'FEMALE'} info={'frau'}  src={woman_} class={['label_I','radio_I']} state={_num_$} set={setNum_$}/>
+                <Choice id={1} comp={0} text_I={'MALE'} info={'mann'}  src={man_} class={['label_II','radio_II']} state={_num_$} set={setNum_$}/>
                 </div>
                 </div>
-                <div id="range_container" style={range_cont}>
-            <Range_ id={0} title={'Ich Wiege '} title_={''} unit_={'kg'} min={'30'} max={'99'} value={Schwer_$} set={setSchwer_$}/>
-            <Range_ id={1} title={'Ich Bin '} title_={'Groß'} unit_={'cm'}min={'100'} max={'200'} value={Größe_$} set={setGröße_$}/>
-            <Range_ id={2} title={'Ich Bin '} title_={'Alt'} unit_={'jahre'}min={'10'} max={'65'} value={Alter_$} set={setAlter_$}/>
+                <div id="inDiv_2" style={inDiv_2}>
+                <Range_ id={0} title={'Ich Wiege '} title_={''} unit_={'kg'} min={'30'} max={'99'} value={Schwer_$} set={setSchwer_$}/>
+                <Range_ id={1} title={'Ich Bin '} title_={'Groß'} unit_={'cm'}min={'100'} max={'200'} value={Größe_$} set={setGröße_$}/>
+                <Range_ id={2} title={'Ich Bin '} title_={'Alt'} unit_={'jahre'}min={'10'} max={'65'} value={Alter_$} set={setAlter_$}/>
                 </div>
 
             </div>
 
-            {<Athlete_ />}
+            {<Sport />}
             
-            <p style={p_s}> Wie Verbringe Ich Meinen Tag?</p>
-            <div style={cont_s_}>
-                <Choice comp={1} text_I={0} info={activity_info[0]} info_i={activity_info_i[0]} id={2} src={activity_0} class={['label_II','radio_II']} state={check_0$} set={setCheck_0$}/>
-                <Choice comp={1} text_I={1} info={activity_info[1]} info_i={activity_info_i[1]} id={3} src={activity_1} class={['label_II','radio_II']} state={check_0$} set={setCheck_0$}/>
-                <Choice comp={1} text_I={2} info={activity_info[2]} info_i={activity_info_i[2]} id={4} src={activity_2} class={['label_II','radio_II']} state={check_0$} set={setCheck_0$}/>
-                <Choice comp={1} text_I={3} info={activity_info[3]} info_i={activity_info_i[3]} id={5} src={activity_3} class={['label_II','radio_II']} state={check_0$} set={setCheck_0$}/>
-                <Choice comp={1} text_I={4} info={activity_info[4]} info_i={activity_info_i[4]} id={6} src={activity_4} class={['label_II','radio_II']} state={check_0$} set={setCheck_0$}/>
+            <p style={p_1}> Wie Verbringe Ich Meinen Tag?</p>
+            <div style={outDiv_3}>
+                <Choice id={2} comp={1} text_I={0} info={aktivität_stufen[0]} info_i={aktivität_details[0]}  src={activity_0} class={['label_II','radio_II']} state={_1num_$} set={set1Num_$}/>
+                <Choice id={3} comp={1} text_I={1} info={aktivität_stufen[1]} info_i={aktivität_details[1]}  src={activity_1} class={['label_II','radio_II']} state={_1num_$} set={set1Num_$}/>
+                <Choice id={4} comp={1} text_I={2} info={aktivität_stufen[2]} info_i={aktivität_details[2]}  src={activity_2} class={['label_II','radio_II']} state={_1num_$} set={set1Num_$}/>
+                <Choice id={5} comp={1} text_I={3} info={aktivität_stufen[3]} info_i={aktivität_details[3]}  src={activity_3} class={['label_II','radio_II']} state={_1num_$} set={set1Num_$}/>
+                <Choice id={6} comp={1} text_I={4} info={aktivität_stufen[4]} info_i={aktivität_details[4]}  src={activity_4} class={['label_II','radio_II']} state={_1num_$} set={set1Num_$}/>
             </div>
             
-            <ForBack_btn handler={handle_btn} value={'Rechne mein Gesamtumsatz'}/>
+            <Button1 handler={handle_btn1} value={'Rechne mein Gesamtumsatz'}/>
 
         </div>
     )
 }
-export var Athlete_ = (pro) => {
+export var Sport = (pro) => {
 
-    var [input_va$, setVa_$] = useState(0)
     var [times_va$, setTimes_$] = useState(1)
-    var [show_$, setShow_$] = useState(false)
     var gr_con_s = {
         display:'flex',
         flexDirection:'column',
@@ -529,7 +539,7 @@ export var Choice = (pro) => {
         </label>
     )
 }
-export var ForBack_btn = (pro) => {
+export var Button1 = (pro) => {
 
     var btn_s = {
         textAlign:'center',
@@ -543,10 +553,11 @@ export var ForBack_btn = (pro) => {
         fontWeight:'400',
         textShadow:'2px 2px 2px #fff',
         color:'#101820',
-        background:'transparent',
+        background:'#fefefe',
         transition:'all ease-in-out 400ms',
         cursor:'pointer',
         width:'100%',
+
     }
     return(
         <button id="forbackbtn" style={btn_s} onClick={pro.handler}>

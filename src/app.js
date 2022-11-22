@@ -19,7 +19,7 @@ export function App (){
 
     // 
 
-    var [switch_$, setSwitch_$] = useState(2)
+    var [switch_$, setSwitch_$] = useState(0)
 
     useEffect(()=>{
   },[x])
