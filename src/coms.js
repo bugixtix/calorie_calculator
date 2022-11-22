@@ -11,9 +11,7 @@ import activity_3 from './imges/überwiegend_gehend_3.jpg'
 import activity_4 from './imges/anstrengende_4.jpg'
 import bg_ from './imges/bg_.jpg'
 import {AiOutlineArrowLeft} from 'react-icons/ai'
-import $ from 'jquery'
-var xy = 0
-var alert_msg = 'BITTE TREFFEN SIE EINE AUSWAHL..' 
+ 
 export var Hello = (prop) => {
     // state$ for whatever was typed inside the field
     var [in2input_$, setInput_$] = useState('')
@@ -72,9 +70,9 @@ export var Hello = (prop) => {
 
     // 1___ listener on input
     var input_changed = (event) =>{
-        var in2input__ = document.getElementById('in2input_')
-        storage$('set','NAME',in2input__.value)
-        setInput_$(in2input__.value)
+        var in_element = document.getElementById('name_in')
+        storage$('set','NAME',in_element.value)
+        setInput_$(in_element.value)
     }
     // 1___
 
@@ -87,8 +85,8 @@ export var Hello = (prop) => {
     // 3___ handling enter function()
     var handle_enter = (info) =>{
         setDone_$(true)
-        let outDiv_2_ = document.getElementById('outDiv_2')
-        outDiv_2_.addEventListener('transitionend',()=>{prop.set(1)})
+        let element_ = document.getElementById('td')
+        element_.addEventListener('transitionend',()=>{prop.set(1)})
     }
     // 3___
 
