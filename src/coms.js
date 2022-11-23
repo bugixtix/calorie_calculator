@@ -668,7 +668,8 @@ export var Result = (pro) =>{
 
 export function Table(pro) {
 
-    var tabelcon_s = {
+    // style§
+    var outDiv_1 = {
         minHeight: '100vh',
         display: 'grid',
         justifyContent: 'center',
@@ -713,24 +714,24 @@ export function Table(pro) {
         transition:'all ease 500ms'
     }
 
+    // btn handler, set state$ to go back 
     var handle_btn = () => {
         pro.set(2)
     }
 
+    // get USERS from the storage$, map over them
     var CUR_USERS = storage$('get','USERS');
     console.log(CUR_USERS)
 
-    let myArray = [0,1,2,3,4,5,6,7,8,9,10]
     let Users_Map = CUR_USERS.map((x)=>{
-            return <Table_row in={x} key={Math.random()}/>
-        
+            return <Table_row in={x} key={Math.random()}/>        
     })
-    console.log(storage$('get','RES_ARR')[6])
 
     return (
         <div>
-            <Name_bar name_$={storage$('get','RES_ARR')[6]} btn_={true} btn_handler={handle_btn}/>
-        <div id="tabel" style={ tabelcon_s }>
+
+        <Name_bar name_$={storage$('get','RES_ARR')[6]} btn_={true} btn_handler={handle_btn}/>
+        <div id="tabel" style={ outDiv_1 }>
 
             <table style={ table_s }>
                 <thead>
@@ -754,11 +755,14 @@ export function Table(pro) {
             <div>
                 <button style={btn_s} id='btn_' onClick={handle_btn}><AiOutlineArrowLeft/></button>
             </div>
+
         </div>
+        
         </div>
     );
 }
 export var Table_row = (pro) =>{
+    // get objects from prop
     let GRUNDBEDARF_ = pro.in[0]
     let GRUNDUMSATZ_ = pro.in[1]
     let NAME_ = pro.in[2] 
@@ -776,9 +780,3 @@ export var Table_row = (pro) =>{
         </tr>
     )
 }
-
-// TODO::
-// Name bar, which doesn't get changed till the answers were gotten.
-// coms, like Gender, Weight & Wize & Age , Activity & Athlete , 
-//      Answer(with possibillity to convert it from kcal to kj and back)
-//      Two buttons: Again & All users info in one table 
