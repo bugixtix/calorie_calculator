@@ -5,7 +5,9 @@
   padding: 0 ;
   
 }
-
+*{
+background-blend-mode:luminosity !important;
+}
 .choice_I:hover  {
   transition: all ease-in-out 700ms;
   background: #fee715 !important;

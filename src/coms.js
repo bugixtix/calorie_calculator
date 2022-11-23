@@ -26,6 +26,8 @@ export var Hello = (prop) => {
         minHeight:'120vh',
         background:`url(${bg_})`,
         backgroundSize:'cover',
+        backgroundBlendMode: 'darken',
+
     }
     var outDiv_2 = {
         display:'flex',
@@ -70,9 +72,9 @@ export var Hello = (prop) => {
 
     // 1___ listener on input
     var input_changed = (event) =>{
-        var in_element = document.getElementById('name_in')
-        storage$('set','NAME',in_element.value)
-        setInput_$(in_element.value)
+        var in2input_ = document.getElementById('in2input_')
+        storage$('set','NAME',in2input_.value)
+        setInput_$(in2input_.value)
     }
     // 1___
 
@@ -85,8 +87,8 @@ export var Hello = (prop) => {
     // 3___ handling enter function()
     var handle_enter = (info) =>{
         setDone_$(true)
-        let element_ = document.getElementById('td')
-        element_.addEventListener('transitionend',()=>{prop.set(1)})
+        let outDiv_2 = document.getElementById('outDiv_2')
+        outDiv_2.addEventListener('transitionend',()=>{prop.set(1)})
     }
     // 3___
 
@@ -133,7 +135,9 @@ export var InputInfo = (prop) =>{
         minHeight:'100vh',
         background:`url(${bg_})`,
         backgroundSize:'cover',
-        padding:'50px 0px 0px 0px'
+        padding:'50px 0px 0px 0px',
+        backgroundBlendMode: 'darken',
+
     }
 
     var outDiv_2 = {
@@ -227,6 +231,7 @@ export var InputInfo = (prop) =>{
         }
     }
     // some texts for the AKTIVITÄT SECTION
+    // console.log(inputed_values + '_______')
     var aktivität_stufen =[
         'Stufe : 0',
         'Stufe : 1',
@@ -485,7 +490,7 @@ export var Choice = (pro) => {
 
     // convert each component id to string
     var comId2string = (key_) =>{
-        return key_ === 0 ? 'GENDER' : key_ ===1 ? 'GENDER' : key_ === 2 ? 'AKTIVITÄT' : key_===3 ? 'AKTIVITÄT' : key_===4 ? 'AKTIVITÄT' : key_===5 ? 'AKTIVITÄT' : key_===6 ? 'AKTIVITÄT' : 'UNKNOWN ID'
+        return key_ === 0 ? 'GESCHLECHT' : key_ ===1 ? 'GESCHLECHT' : key_ === 2 ? 'AKTIVITÄT' : key_===3 ? 'AKTIVITÄT' : key_===4 ? 'AKTIVITÄT' : key_===5 ? 'AKTIVITÄT' : key_===6 ? 'AKTIVITÄT' : 'UNKNOWN ID'
     }
 
     return(
@@ -590,7 +595,9 @@ export var Result = (pro) =>{
         alignItems:'center',
         minHeight:'100vh',
         background:`url(${bg_})`,
-        backgroundSize:'cover'
+        backgroundSize:'cover',
+        backgroundBlendMode: 'darken',
+
     }
     var inDiv_2 = {
         display:'flex',
@@ -730,7 +737,7 @@ export function Table(pro) {
     return (
         <div>
 
-        <Name_bar name_$={storage$('get','RES_ARR')[6]} btn_={true} btn_handler={handle_btn}/>
+        <Name_bar name_$={storage$('get','ALL_INPUTED_VALUES')[6]} btn_={true} btn_handler={handle_btn}/>
         <div id="tabel" style={ outDiv_1 }>
 
             <table style={ table_s }>
