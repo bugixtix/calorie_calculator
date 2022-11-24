@@ -19,3 +19,6 @@ export function App (){
         </div>
     )
 }
+
+// done on November 24, 2022
+// other changes will come soon
